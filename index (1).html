@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMYPC Commitment Wall 2026</title>
+<style>
+:root{--ink:#14284b;--mut:#6b7791;--bg:#eef3f8;--card:#fff;
+--sus:#1f9d55;--lrn:#1e88d6;--team:#7b4bd1;--inn:#f28a1f;--well:#e2405e}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(120deg,#0e2a55,#1b5a8c 55%,#2f8a5b);color:#fff;padding:22px 28px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}
+header h1{margin:0;font-size:clamp(26px,4vw,44px);letter-spacing:.5px}
+header h1 span{color:#8fe36b}
+header p{margin:4px 0 12px;opacity:.9}
+.stats{display:flex;gap:28px;flex-wrap:wrap}
+.stats b{font-size:28px;display:block;line-height:1}
+.stats small{opacity:.85}
+.tag{font-style:italic;font-size:22px;opacity:.9;max-width:220px}
+.cta{background:#fff;color:var(--ink);border-radius:12px;padding:14px 18px;text-align:center}
+.cta button,.big{background:var(--ink);color:#fff;border:0;border-radius:10px;padding:11px 20px;font-size:15px;font-weight:600;cursor:pointer}
+.cta button:hover,.big:hover{background:#0b1d3a}
+main{padding:18px 20px;max-width:1700px;margin:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.toolbar input{flex:1;min-width:200px;padding:10px 14px;border:1px solid #cfd8e6;border-radius:10px;font-size:14px}
+.chip{border:1px solid #cfd8e6;background:#fff;border-radius:20px;padding:7px 14px;cursor:pointer;font-size:13px;color:var(--ink)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cols{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:start}
+@media(max-width:1100px){.cols{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.cols{grid-template-columns:1fr}}
+.col{border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 2px 8px #1a2c4a14}
+.col h2{margin:0;padding:12px 14px;color:#fff;font-size:15px}
+.col h2 small{display:block;font-weight:400;opacity:.9;font-size:12px;margin-top:2px}
+.col .list{padding:10px;display:flex;flex-direction:column;gap:10px;min-height:80px}
+.item{border:1px solid #e3e9f2;border-radius:10px;padding:10px}
+.who{display:flex;gap:9px;align-items:center}
+.av{width:42px;height:42px;border-radius:50%;object-fit:cover;flex:none;background:#cfd8e6;display:grid;place-items:center;font-weight:700;color:#fff}
+.who b{font-size:13px;display:block}.who small{color:var(--mut);font-size:12px}
+.who time{margin-left:auto;color:var(--mut);font-size:11px;align-self:flex-start}
+.txt{margin:8px 0;font-size:14px;line-height:1.4}
+.acts{display:flex;gap:14px;font-size:13px}
+.acts button{background:none;border:0;cursor:pointer;color:var(--ink);font-size:13px;padding:2px 0}
+.acts button.on{font-weight:700}
+.cm{margin-top:8px;border-top:1px dashed #dbe3ef;padding-top:8px;display:none}
+.cm.open{display:block}
+.cm .c{display:flex;gap:8px;margin-bottom:8px;font-size:12.5px}
+.cm .av{width:28px;height:28px;font-size:11px}
+.empty{color:var(--mut);font-size:13px;text-align:center;padding:12px}
+.low{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px}
+@media(max-width:900px){.low{grid-template-columns:1fr}}
+.panel{background:#fff;border-radius:12px;padding:14px 16px;box-shadow:0 2px 8px #1a2c4a14}
+.panel h3{margin:0 0 10px;font-size:15px}
+.spot{background:linear-gradient(135deg,#fff6df,#fff)}
+.spot q{display:block;font-size:17px;font-style:italic;margin:10px 0}
+.badge{display:inline-block;background:#fde7b0;border-radius:8px;padding:5px 10px;font-size:12px}
+.bar{display:grid;grid-template-columns:130px 1fr 40px;gap:8px;align-items:center;font-size:13px;margin:8px 0}
+.bar i{display:block;height:12px;border-radius:6px;background:#e7edf5;overflow:hidden}
+.bar i u{display:block;height:100%;transition:width .5s}
+.bar span{text-align:right}
+footer{text-align:center;padding:24px;font-weight:700;font-size:20px}
+.modal{position:fixed;inset:0;background:#0a1830b0;display:none;place-items:center;padding:14px;z-index:9}
+.modal.open{display:grid}
+.box{background:#fff;border-radius:14px;padding:18px;width:min(520px,100%);max-height:94vh;overflow:auto}
+.box h3{margin:0 0 10px}
+.box label{display:block;font-size:12px;color:var(--mut);margin:10px 0 3px}
+.box input,.box select,.box textarea{width:100%;padding:9px 11px;border:1px solid #cfd8e6;border-radius:8px;font:inherit}
+.cam{position:relative;background:#0b1220;border-radius:10px;overflow:hidden;aspect-ratio:4/3;display:grid;place-items:center;color:#cfd8e6;font-size:13px;text-align:center}
+.cam video,.cam img{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.cam img{transform:none}
+.row{display:flex;gap:8px;margin-top:12px;justify-content:flex-end}
+.ghost{background:#fff;border:1px solid #cfd8e6;border-radius:10px;padding:10px 16px;cursor:pointer}
+.err{color:#c0233f;font-size:13px;margin-top:8px;min-height:16px}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.tools .chip{background:#ffffff26;color:#fff;border-color:#ffffff66}
+.note{background:#fff3cd;color:#5c4400;padding:8px 16px;font-size:13px;text-align:center}
+.fine{font-size:11.5px;color:var(--mut);margin-top:8px}
+.qrbox{display:grid;place-items:center;gap:10px;text-align:center}.qrbox div:first-child{background:#fff;padding:12px;border-radius:10px}
+.qrbox code{font-size:12px;word-break:break-all}
+#qrCorner{position:fixed;right:16px;bottom:16px;background:#fff;border-radius:12px;padding:10px;box-shadow:0 4px 16px #0003;text-align:center;font-size:12px;font-weight:600;z-index:5}
+body.display .cta,body.display .toolbar,body.display .tools,body.display .low .panel:last-child{display:none}
+body.display .cols{grid-template-columns:repeat(5,1fr)!important}
+@media print{@page{size:A4;margin:10mm}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{background:#fff}.cta,.toolbar,.tools,.note,.modal,#qrCorner,.low .panel:last-child,.cm .ghost{display:none!important}
+.cols{grid-template-columns:repeat(2,1fr)!important}.item,.col h2{break-inside:avoid}.col{box-shadow:none;border:1px solid #e3e9f2;overflow:visible}
+.cm{display:block!important}.low{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="note" id="note" style="display:none"></div>
+<header>
+  <div class="tag">People Today, A Brighter Tomorrow</div>
+  <div>
+    <h1>SMYPC COMMITMENT WALL <span>2026</span></h1>
+    <p>One Commitment. One Action. One Positive Impact.</p>
+    <div class="stats">
+      <div><b id="sP">0</b><small>Participants</small></div>
+      <div><b id="sC">0</b><small>Commitments</small></div>
+      <div><b>5</b><small>Impact Goals</small></div>
+    </div>
+  </div>
+  <div class="cta"><button onclick="openModal('commit')">+ Add your commitment</button><div style="font-size:12px;margin-top:6px;color:var(--mut)">It starts with you</div></div>
+  <div class="tools"><button class="chip" onclick="exportPdf()">⬇ Export PDF</button><button class="chip" onclick="showQR()">▦ QR code</button></div>
+</header>
+
+<main>
+  <div class="toolbar">
+    <input id="q" type="search" placeholder="Search commitments or names…">
+    <span id="chips"></span>
+  </div>
+  <div class="cols" id="cols"></div>
+
+  <div class="low">
+    <div class="panel spot" id="spot"></div>
+    <div class="panel"><h3>Impact dashboard</h3><div id="dash"></div></div>
+    <div class="panel"><h3>Be part of it</h3>
+      <p style="font-size:14px;color:var(--mut);margin:0 0 12px">Every commitment is posted with a photo taken with your phone or PC camera. React and comment on your colleagues' commitments to cheer them on.</p>
+      <button class="big" onclick="openModal('commit')">Add your commitment</button>
+    </div>
+  </div>
+</main>
+<footer>Together We Create Positive Impact</footer>
+
+<div class="modal" id="modal">
+  <div class="box">
+    <h3 id="mTitle"></h3>
+    <div class="cam" id="cam"><span>Starting camera…</span></div>
+    <div class="row" style="margin-top:8px">
+      <button class="ghost" id="snap" onclick="snap()">📷 Take photo</button>
+      <button class="ghost" id="flip" onclick="flipCam()">🔄 Flip</button>
+      <label class="ghost" style="cursor:pointer">📱 Phone camera app<input type="file" accept="image/*" capture="user" hidden onchange="fromFile(this)"></label>
+      <button class="ghost" id="retake" onclick="startCam()" style="display:none">Retake</button>
+    </div>
+    <label>Your name</label><input id="fName" maxlength="40">
+    <label>Department</label><input id="fDept" maxlength="40" placeholder="e.g. Maintenance">
+    <div id="catWrap"><label>Category</label><select id="fCat"></select></div>
+    <label id="fTxtL">Your commitment</label><textarea id="fTxt" rows="3" maxlength="220"></textarea>
+    <div class="fine">By posting, you agree your photo, name and message appear on the public wall.</div>
+    <div class="err" id="err"></div>
+    <div class="row"><button class="ghost" onclick="closeModal()">Cancel</button><button class="big" id="post" onclick="submit()">Post</button></div>
+  </div>
+</div>
+
+<div class="modal" id="qrModal"><div class="box qrbox"><h3>Scan to join the wall</h3><div id="qrImg"></div><code id="qrUrl"></code><button class="big" onclick="qrModal.classList.remove('open')">Close</button></div></div>
+
+<script>
+/* ===== 1) PASTE YOUR FIREBASE CONFIG HERE (Firebase console > Project settings > Your apps > Web) ===== */
+const FIREBASE_CONFIG={apiKey:"PASTE_API_KEY",authDomain:"PASTE.firebaseapp.com",projectId:"PASTE_PROJECT_ID",appId:"PASTE_APP_ID"};
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const CATS={
+ sus:{n:"Sustainability",t:"Greener choices. Brighter futures.",c:"#1f9d55",e:"🌱"},
+ lrn:{n:"Learning & Development",t:"Curious minds. Greater possibilities.",c:"#1e88d6",e:"🎓"},
+ team:{n:"Teamwork & Culture",t:"Stronger together. Further always.",c:"#7b4bd1",e:"🤝"},
+ inn:{n:"Innovation",t:"Bold ideas. Real impact.",c:"#f28a1f",e:"💡"},
+ well:{n:"Well-being",t:"Healthier people. Happier teams.",c:"#e2405e",e:"❤️"}};
+const KEY="smypc_wall_v1",MY="smypc_wall_mine",LIMIT=150;
+const LOCAL=/PASTE/.test(FIREBASE_CONFIG.apiKey)||typeof firebase==="undefined";
+const DISPLAY=new URLSearchParams(location.search).has("display");
+const PROMPTS=["What is your dream for SMYPC?","How will you make sure you are ready for what's next?","What's next for you in SMYPC?"];
+let items=[],mine={},filter="all",mode="commit",target=null,photo=null,stream=null,facing="user",fdb=null,openC=new Set(),busy=false;
+const now=Date.now(),H=36e5;
+const seed=[["Maria Santos","Operations","sus","I commit to reducing paper consumption by 50% this year.",18,12],["Johanne Dumaquit","Human Resources","lrn","I commit to completing a professional certification in 2026.",22,15],["Sarah Reyes","Marketing","team","I will recognize a colleague's efforts every week.",25,18],["Mark Castillo","Product Development","inn","I will propose one improvement idea every quarter.",13,8],["Liza Mendoza","Customer Service","well","I commit to prioritizing my physical and mental wellness by taking regular breaks.",28,21]]
+ .map((s,i)=>({id:"s"+i,name:s[0],dept:s[1],cat:s[2],text:s[3],photo:null,ts:now-(i+1)*H,likes:s[4],hearts:s[5],comments:[]}));
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function ago(t){const m=Math.floor((Date.now()-t)/6e4);if(m<1)return"just now";if(m<60)return m+"m ago";const h=Math.floor(m/60);return h<24?h+"h ago":Math.floor(h/24)+"d ago"}
+function avatar(p,name,color){return p?`<img class="av" src="${p}" alt="">`:`<div class="av" style="background:${color}">${esc(name.split(" ").map(w=>w[0]).slice(0,2).join("").toUpperCase())}</div>`}
+
+/* ---------- Data layer: Firestore (shared) or localStorage (demo) ---------- */
+function init(){
+ try{mine=JSON.parse(localStorage.getItem(MY)||"{}")}catch(e){}
+ if(DISPLAY)document.body.classList.add("display");
+ if(LOCAL){
+  try{items=JSON.parse(localStorage.getItem(KEY)||"null")||seed}catch(e){items=seed}
+  note("Demo mode: entries are saved on this device only. Add your Firebase config to share the wall with everyone.");render();
+ }else{
+  firebase.initializeApp(FIREBASE_CONFIG);fdb=firebase.firestore();
+  fdb.collection("commitments").orderBy("ts","desc").limit(LIMIT).onSnapshot(
+   s=>{items=s.docs.map(d=>({likes:0,hearts:0,comments:[],...d.data(),id:d.id}));render()},
+   e=>{note("Cannot load the wall ("+e.code+"). Check your internet or Firestore rules.");render()});
+ }
+ if(DISPLAY)showQR(true);
+}
+function note(t){const n=$("note");n.textContent=t;n.style.display=t?"block":"none"}
+function save(){try{localStorage.setItem(MY,JSON.stringify(mine));if(LOCAL)localStorage.setItem(KEY,JSON.stringify(items))}catch(e){alert("Storage is full.")}}
+
+/* ---------- Render ---------- */
+function render(){
+ const q=$("q").value.toLowerCase().trim();
+ $("chips").innerHTML=[["all","All"],...Object.entries(CATS).map(([k,v])=>[k,v.n.split(" ")[0]])].map(([k,l])=>`<button class="chip ${filter===k?"on":""}" onclick="setF('${k}')">${l}</button>`).join(" ");
+ const cols=$("cols");
+ cols.innerHTML=Object.entries(CATS).filter(([k])=>filter==="all"||filter===k).map(([k,v])=>{
+  const list=items.filter(i=>i.cat===k&&(!q||(i.text+i.name+i.dept).toLowerCase().includes(q))).sort((a,b)=>b.ts-a.ts);
+  return `<section class="col"><h2 style="background:${v.c}">${v.e} ${v.n}<small>${v.t}</small></h2><div class="list">`+(list.map(card).join("")||`<div class="empty">No commitments yet. Be the first!</div>`)+`</div></section>`}).join("");
+ cols.style.gridTemplateColumns=filter!=="all"?"repeat(auto-fit,minmax(280px,420px))":"";
+ stats();
+}
+function card(i){
+ const c=CATS[i.cat]||CATS.sus,L=mine[i.id+"L"],R=mine[i.id+"R"],cm=i.comments||[];
+ return `<article class="item"><div class="who">${avatar(i.photo,i.name,c.c)}<div><b>${esc(i.name)}</b><small>${esc(i.dept||"")}</small></div><time>${ago(i.ts)}</time></div>
+ <p class="txt">${esc(i.text)}</p>
+ <div class="acts"><button class="${L?"on":""}" onclick="react('${i.id}','likes','L')">👍 ${i.likes||0}</button><button class="${R?"on":""}" onclick="react('${i.id}','hearts','R')">❤️ ${i.hearts||0}</button><button onclick="toggleC('${i.id}')">💬 ${cm.length}</button></div>
+ <div class="cm ${openC.has(i.id)?"open":""}" id="cm-${i.id}">${cm.map(m=>`<div class="c">${avatar(m.photo,m.name,c.c)}<div><b>${esc(m.name)}</b> <span style="color:var(--mut)">${ago(m.ts)}</span><br>${esc(m.text)}</div></div>`).join("")}
+  <button class="ghost" style="font-size:12px;padding:6px 10px" onclick="openModal('comment','${i.id}')">+ Add comment (photo required)</button></div></article>`}
+function setF(k){filter=k;render()}
+function toggleC(id){openC.has(id)?openC.delete(id):openC.add(id);$("cm-"+id).classList.toggle("open")}
+function react(id,f,k){
+ const it=items.find(x=>x.id===id),key=id+k,d=mine[key]?-1:1;
+ if(d<0)delete mine[key];else mine[key]=1;
+ it[f]=Math.max(0,(it[f]||0)+d);save();render();
+ if(!LOCAL)fdb.collection("commitments").doc(id).update({[f]:firebase.firestore.FieldValue.increment(d)}).catch(()=>note("Reaction not saved. Check your connection."));
+}
+function stats(){
+ const people=new Set([...items.map(i=>i.name.toLowerCase()),...items.flatMap(i=>(i.comments||[]).map(c=>c.name.toLowerCase()))]);
+ $("sP").textContent=people.size;$("sC").textContent=items.length;
+ const tot=items.length||1;
+ $("dash").innerHTML=Object.entries(CATS).map(([k,v])=>{const p=Math.round(items.filter(i=>i.cat===k).length/tot*100);
+  return `<div class="bar"><span style="text-align:left">${v.n.split(" ")[0]}</span><i><u style="width:${p}%;background:${v.c}"></u></i><span>${p}%</span></div>`}).join("");
+ const top=[...items].sort((a,b)=>(b.hearts||0)-(a.hearts||0))[0];
+ $("spot").innerHTML=top?`<h3>⭐ Commitment spotlight</h3><div class="who">${avatar(top.photo,top.name,(CATS[top.cat]||CATS.sus).c)}<div><b>${esc(top.name)}</b><small>${esc(top.dept||"")}</small></div></div><q>“${esc(top.text)}”</q><span class="badge">Employee commitment of the week</span><div class="acts" style="margin-top:10px">❤️ ${top.hearts||0} &nbsp; 💬 ${(top.comments||[]).length}</div>`:"<h3>⭐ Commitment spotlight</h3><div class='empty'>Post a commitment to be featured.</div>";
+}
+
+/* ---------- Camera (phone + PC) ---------- */
+function openModal(m,id){
+ mode=m;target=id||null;photo=null;
+ $("mTitle").textContent=m==="commit"?"Add your commitment":"Add a comment";
+ $("catWrap").style.display=m==="commit"?"block":"none";
+ $("fTxtL").textContent=m==="commit"?"Your commitment":"Your comment";
+ $("fTxt").placeholder=m==="commit"?PROMPTS[Math.floor(Math.random()*PROMPTS.length)]:"";
+ $("fCat").innerHTML=Object.entries(CATS).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join("");
+ $("fTxt").value="";$("err").textContent="";
+ try{const n=localStorage.getItem("smypc_wall_name");if(n){fName.value=n;fDept.value=localStorage.getItem("smypc_wall_dept")||""}}catch(e){}
+ $("modal").classList.add("open");startCam();
+}
+async function startCam(){
+ photo=null;stopCam();const cam=$("cam");
+ $("snap").style.display="";$("flip").style.display="";$("retake").style.display="none";
+ cam.innerHTML="<span>Starting camera…</span>";
+ try{
+  stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:720},height:{ideal:720}},audio:false});
+  cam.innerHTML="<video autoplay playsinline muted></video>";
+  const v=cam.querySelector("video");v.style.transform=facing==="user"?"scaleX(-1)":"none";v.srcObject=stream;
+ }catch(e){
+  cam.innerHTML="<span>Camera blocked or unavailable. Tap “Phone camera app” below, or allow camera access in your browser settings and tap Retake.</span>";
+  $("retake").style.display="";
+ }
+}
+function flipCam(){facing=facing==="user"?"environment":"user";startCam()}
+function stopCam(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
+function shrink(src,sw,sh,mirror){
+ const s=Math.min(sw,sh),c=document.createElement("canvas");c.width=c.height=240;const x=c.getContext("2d");
+ if(mirror){x.translate(240,0);x.scale(-1,1)}
+ x.drawImage(src,(sw-s)/2,(sh-s)/2,s,s,0,0,240,240);return c.toDataURL("image/jpeg",.7)}
+function setPhoto(p){photo=p;stopCam();$("cam").innerHTML=`<img src="${p}" alt="Your photo">`;
+ $("snap").style.display="none";$("flip").style.display="none";$("retake").style.display="";$("err").textContent=""}
+function snap(){
+ const v=document.querySelector("#cam video");
+ if(!v||!v.videoWidth){$("err").textContent="Camera is not ready yet.";return}
+ setPhoto(shrink(v,v.videoWidth,v.videoHeight,facing==="user"));
+}
+function fromFile(inp){
+ const f=inp.files[0];if(!f)return;const img=new Image();
+ img.onload=()=>{setPhoto(shrink(img,img.naturalWidth,img.naturalHeight,false));URL.revokeObjectURL(img.src)};
+ img.src=URL.createObjectURL(f);inp.value="";
+}
+function closeModal(){stopCam();$("modal").classList.remove("open")}
+
+/* ---------- Post ---------- */
+async function submit(){
+ if(busy)return;
+ const name=fName.value.trim(),dept=fDept.value.trim(),text=fTxt.value.trim(),err=$("err");
+ if(!photo){err.textContent="Please take a photo first.";return}
+ if(!name){err.textContent="Please enter your name.";return}
+ if(!text){err.textContent="Please write your "+(mode==="commit"?"commitment":"comment")+".";return}
+ try{localStorage.setItem("smypc_wall_name",name);localStorage.setItem("smypc_wall_dept",dept)}catch(e){}
+ busy=true;$("post").textContent="Posting…";
+ try{
+  if(mode==="commit"){
+   const it={name,dept,cat:fCat.value,text,photo,ts:Date.now(),likes:0,hearts:0,comments:[]};
+   if(LOCAL){it.id="i"+Date.now();items.push(it)}else await fdb.collection("commitments").add(it);
+  }else{
+   const c={name,text,photo,ts:Date.now()};openC.add(target);
+   if(LOCAL)items.find(i=>i.id===target).comments.push(c);else await fdb.collection("commitments").doc(target).update({comments:firebase.firestore.FieldValue.arrayUnion(c)});
+  }
+  save();closeModal();render();
+ }catch(e){err.textContent="Could not post ("+(e.code||"error")+"). Check your connection and try again."}
+ busy=false;$("post").textContent="Post";
+}
+
+/* ---------- Export PDF + QR ---------- */
+function exportPdf(){
+ const t=document.title;document.title="SMYPC Commitment Wall 2026";
+ if(filter!=="all"||$("q").value){filter="all";$("q").value="";render()}
+ window.print();document.title=t;
+}
+function showQR(corner){
+ const url=location.origin+location.pathname,box=corner===true?document.createElement("div"):$("qrImg");
+ if(corner===true){box.id="qrCorner";document.body.appendChild(box);box.innerHTML="<div id='qrC'></div>Scan to join";}
+ const t=corner===true?box.firstChild:box;t.innerHTML="";
+ try{new QRCode(t,{text:url,width:corner===true?150:240,height:corner===true?150:240})}catch(e){t.textContent=url}
+ if(corner!==true){$("qrUrl").textContent=url;$("qrModal").classList.add("open")}
+}
+$("q").addEventListener("input",render);
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal();$("qrModal").classList.remove("open")}});
+init();
+</script>
+</body>
+</html>
